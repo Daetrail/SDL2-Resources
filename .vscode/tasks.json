@@ -1,0 +1,73 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "Debug",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "-c",
+                "${workspaceFolder}/src/*.cpp",
+                "-m64",
+                "-Wall",
+                "-I",
+                "${workspaceFolder}/include",
+                "&&",
+                "g++",
+                "${workspaceFolder}/bin/debug/*.o",
+                "-o",
+                "${workspaceFolder}/bin/debug/${fileBasenameNoExtension}",
+                "-lSDL2main",
+                "-lSDL2",
+                "-lSDL2_image"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/debug"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "detail": "compiler: /usr/bin/g++"
+        },
+        {
+            "type": "cppbuild",
+            "label": "Release",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-c",
+                "-O3",
+                "${workspaceFolder}/src/*.cpp",
+                "-m64",
+                "-Wall",
+                "-I",
+                "${workspaceFolder}/include",
+                "&&",
+                "g++",
+                "${workspaceFolder}/bin/release/*.o",
+                "-o",
+                "${workspaceFolder}/bin/release/${fileBasenameNoExtension}",
+                "-lSDL2main",
+                "-lSDL2",
+                "-lSDL2_image"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/release"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "compiler: /usr/bin/g++"
+        }
+    ]
+}
