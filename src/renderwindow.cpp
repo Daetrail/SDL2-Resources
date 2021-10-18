@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <iostream>
 
 #include "RenderWindow.hpp"
@@ -14,5 +15,17 @@ RenderWindow::RenderWindow(std::string title, const unsigned int WINDOW_WIDTH, c
         this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
         if (this->renderer == nullptr)
             std::cout << "(RenderWindow) Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+        else
+        {
+            SDL_SetRenderDrawColor(this->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        }
     }
+}
+
+RenderWindow::~RenderWindow()
+{
+    SDL_DestroyRenderer(this->renderer);
+    SDL_DestroyWindow(this->window);
+    this->renderer = nullptr;
+    this->window = nullptr;
 }

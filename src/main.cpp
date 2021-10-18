@@ -12,6 +12,10 @@ const unsigned int WINDOW_HEIGHT = 750;
 int main(int argc, char* argv[])
 {
 
+    
+
+    IMG_Quit();
+    SDL_Quit();
 
     return 0;
 }
