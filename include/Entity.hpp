@@ -9,7 +9,7 @@ class Entity
 {
 public:
     Entity(std::string texFile, SDL_Renderer* renderer);
-    ~Entity();
+    void close();
 
     SDL_Rect* getSrcRect();
     SDL_Rect* getDstRect();

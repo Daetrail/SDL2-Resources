@@ -24,7 +24,7 @@ RenderWindow::RenderWindow(std::string title, const unsigned int WINDOW_WIDTH, c
     }
 }
 
-RenderWindow::~RenderWindow()
+void RenderWindow::close()
 {
     SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);

@@ -11,7 +11,7 @@ class RenderWindow
 {
 public:
     RenderWindow(std::string title, const unsigned int WINDOW_WIDTH, const unsigned int WINDOW_HEIGHT);
-    ~RenderWindow();
+    void close();
 
     SDL_Renderer* getRenderer();
 

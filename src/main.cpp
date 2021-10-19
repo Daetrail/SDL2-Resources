@@ -40,6 +40,7 @@ int main(int argc, char* argv[])
     }
 
     util::destroyEntityTex(background);
+    window.close();
 
     util::close();
 

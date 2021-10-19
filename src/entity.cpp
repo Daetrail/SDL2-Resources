@@ -24,7 +24,7 @@ Entity::Entity(std::string texFile, SDL_Renderer* renderer)
     }
 }
 
-Entity::~Entity()
+void Entity::close()
 {
     SDL_DestroyTexture(this->tex);
     this->tex = nullptr;

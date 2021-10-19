@@ -36,13 +36,13 @@ namespace util
 
     void destroyEntityTex(Entity entity)
     {
-        entity.~Entity();
+        entity.close();
     }
 
     void destroyEntityTex(std::vector<Entity> entities)
     {
         for (auto entity : entities)
-            entity.~Entity();
+            entity.close();
     }
 
     template <class T>
