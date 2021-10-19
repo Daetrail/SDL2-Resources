@@ -1,6 +1,3 @@
-# REMINDER FOR DANANGTHAN: Do not use for compiling at home,
-# 	Only use for compiling where VS Code is not available. (eg. Replit)
-
 # For temporary use only. I am probably going to upgrade this into a CMakeLists.txt file
 
 # Change debug/release to debug/release for whichever one you need
