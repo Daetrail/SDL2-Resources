@@ -10,13 +10,13 @@ main.o: main.cpp
 	g++ -c main.cpp -o ../bin/$(type)/main.o -I ../include/
 
 renderwindow.o: renderwindow.cpp
-	g++ -c renderwindow.cpp -o ../bin/$(type)/renderwindow.o -I ../include/
+	g++ -c renderwindow.cpp -o ../bin/$(type)/renderwindow.o -I ../include/ -I ../include/SDL2
 
 entity.o: entity.cpp
-	g++ -c entity.cpp -o ../bin/$(type)/entity.o -I ../include/
+	g++ -c entity.cpp -o ../bin/$(type)/entity.o -I ../include/ -I ../include/SDL2
 
 util.o: util.cpp
-	g++ -c util.cpp -o ../bin/$(type)/util.o -I ../include/
+	g++ -c util.cpp -o ../bin/$(type)/util.o -I ../include/ -I ../include/SDL2
 
 clean:
-	rm ../bin/$(type)/*.o ../bin/$(type)/main -I ../include/
+	rm ../bin/$(type)/*.o ../bin/$(type)/main -I ../include/ -I ../include/SDL2
