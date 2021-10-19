@@ -10,6 +10,10 @@ class Entity
 public:
     Entity(std::string texFile, SDL_Renderer* renderer);
     ~Entity();
+
+    SDL_Rect* getSrcRect();
+    SDL_Rect* getDstRect();
+    SDL_Texture* getTex();
 private:
     std::string texFile;
     SDL_Renderer* renderer = nullptr;

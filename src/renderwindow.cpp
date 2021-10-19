@@ -1,8 +1,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <vector>
 
 #include "RenderWindow.hpp"
+#include "Entity.hpp"
 
 RenderWindow::RenderWindow(std::string title, const unsigned int WINDOW_WIDTH, const unsigned int WINDOW_HEIGHT)
     :title{title}, w_w(WINDOW_WIDTH), w_h(WINDOW_HEIGHT)
@@ -28,4 +30,40 @@ RenderWindow::~RenderWindow()
     SDL_DestroyWindow(this->window);
     this->renderer = nullptr;
     this->window = nullptr;
+}
+
+SDL_Renderer* RenderWindow::getRenderer()
+{
+    return this->renderer;
+}
+
+void RenderWindow::clear()
+{
+    SDL_RenderClear(this->renderer);
+}
+
+void RenderWindow::update()
+{
+    SDL_RenderPresent(this->renderer);
+}
+
+void RenderWindow::drawToEntireWindow(Entity entity)
+{
+    SDL_Texture* tex = entity.getTex();
+    SDL_RenderCopy(this->renderer, tex, nullptr, nullptr);
+}
+
+void RenderWindow::drawEntity(Entity entity)
+{
+    SDL_Rect* src = entity.getSrcRect();
+    SDL_Rect* dst = entity.getDstRect();
+    SDL_Texture* tex = entity.getTex();
+
+    SDL_RenderCopy(this->renderer, tex, src, dst);
+}
+
+void RenderWindow::drawEntities(std::vector<Entity> entities)
+{
+    for (auto entity : entities)
+        drawEntity(entity);
 }

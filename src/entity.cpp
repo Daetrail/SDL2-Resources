@@ -29,3 +29,18 @@ Entity::~Entity()
     SDL_DestroyTexture(this->tex);
     this->tex = nullptr;
 }
+
+SDL_Rect* Entity::getSrcRect()
+{   
+    return src;
+}
+
+SDL_Rect* Entity::getDstRect()
+{   
+    return dst;
+}
+
+SDL_Texture* Entity::getTex()
+{
+    return tex;
+}

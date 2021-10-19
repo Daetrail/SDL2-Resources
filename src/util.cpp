@@ -9,16 +9,34 @@
 
 namespace util
 {
-    bool util()
+    bool init()
     {
         if (SDL_Init(SDL_INIT_VIDEO) < 0)
+        {
             std::cout << "(Util) SDL could not initialise! SDL_Error: " << SDL_GetError() << std::endl;
+            return false;
+        }
         else
         {
             int imgFlags = IMG_INIT_PNG;
             if (!(IMG_Init(imgFlags) & imgFlags))
+            {
                 std::cout << "(Util) SDL_image PNG could not initialise! SDL_image Error: " << SDL_GetError() << std::endl;  
+                return false;
+            }
         }
+        return true;
+    }
+
+    void close()
+    {
+        IMG_Quit();
+        SDL_Quit();
+    }
+
+    void destroyEntityTex(Entity entity)
+    {
+        entity.~Entity();
     }
 
     void destroyEntityTex(std::vector<Entity> entities)
@@ -33,24 +51,24 @@ namespace util
     template <class T>
     Vector2<T> Vector2<T>::operator+ (Vector2<T> vector)
     {
-        return Vector2(x + vector.x, y + vector.y)
+        return Vector2(x + vector.x, y + vector.y);
     }
 
     template <class T>
     Vector2<T> Vector2<T>::operator- (Vector2<T> vector)
     {
-        return Vector2(x - vector.x, y - vector.y)
+        return Vector2(x - vector.x, y - vector.y);
     }   
 
     template <class T>
     Vector2<T> Vector2<T>::operator* (Vector2<T> vector)
     {
-        return Vector2(x * vector.x, y * vector.y)
+        return Vector2(x * vector.x, y * vector.y);
     } 
 
     template <class T>
     Vector2<T> Vector2<T>::operator/ (Vector2<T> vector)
     {
-        return Vector2<T>(x / vector.x, y / vector.y)
+        return Vector2<T>(x / vector.x, y / vector.y);
     } 
 }

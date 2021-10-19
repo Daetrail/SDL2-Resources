@@ -11,6 +11,8 @@
 namespace util
 {
     bool init();
+    void close();
+    void destroyEntityTex(Entity entity);
     void destroyEntityTex(std::vector<Entity> entities);
 
     template <class T>
