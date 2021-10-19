@@ -4,7 +4,7 @@
 type = debug
 
 main: main.o renderwindow.o entity.o util.o
-	g++ ../bin/$(type)/*.o -I ../include/ -m64 -Wall -O3 -o ../bin/$(type)/main -lSDL2main -lSDL2 -lSDL2_image
+	g++ ../bin/$(type)/*.o -I ../include/ -m64 -Wall -O3 -o ../../main -lSDL2main -lSDL2 -lSDL2_image
 
 main.o: main.cpp
 	g++ -c main.cpp -o ../bin/$(type)/main.o -I ../include/
