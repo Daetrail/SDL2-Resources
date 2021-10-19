@@ -10,7 +10,7 @@
 
 const unsigned int WINDOW_WIDTH = 1366;
 const unsigned int WINDOW_HEIGHT = 768; 
-const std::string TITLE = "SDL-Resources";
+const std::string TITLE = "SDL2-Resources";
 
 int main(int argc, char* argv[])
 {
