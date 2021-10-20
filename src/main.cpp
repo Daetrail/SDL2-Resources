@@ -8,8 +8,8 @@
 #include "Entity.hpp"
 #include "Util.hpp"
 
-const unsigned int WINDOW_WIDTH = 1366;
-const unsigned int WINDOW_HEIGHT = 768; 
+constexpr unsigned int WINDOW_WIDTH = 1366;
+constexpr unsigned int WINDOW_HEIGHT = 768; 
 const std::string TITLE = "SDL2-Resources";
 
 int main(int argc, char* argv[])
@@ -20,6 +20,7 @@ int main(int argc, char* argv[])
     RenderWindow window(TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     Entity background("res/gfx/main-bg.png", window.getRenderer());
+    background.setBlendMode(SDL_BLENDMODE_BLEND);
 
     SDL_Event event;
 

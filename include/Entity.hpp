@@ -14,6 +14,10 @@ public:
     SDL_Rect* getSrcRect();
     SDL_Rect* getDstRect();
     SDL_Texture* getTex();
+
+    void setColour(uint8_t r, uint8_t g, uint8_t b);
+    void setBlendMode(SDL_BlendMode blending);
+    void setAlpha(uint8_t alpha);
 private:
     std::string texFile;
     SDL_Renderer* renderer = nullptr;

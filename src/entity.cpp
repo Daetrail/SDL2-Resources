@@ -44,3 +44,18 @@ SDL_Texture* Entity::getTex()
 {
     return tex;
 }
+
+void Entity::setColour(uint8_t r, uint8_t g, uint8_t b)
+{
+    SDL_SetTextureColorMod(this->tex, r, g, b);
+}
+
+void Entity::setBlendMode(SDL_BlendMode blending)
+{
+    SDL_SetTextureBlendMode(this->tex, blending);
+}
+
+void Entity::setAlpha(uint8_t alpha)
+{
+    SDL_SetTextureAlphaMod(this->tex, alpha);
+}
