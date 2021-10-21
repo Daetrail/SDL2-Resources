@@ -1,11 +1,13 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <string>
+#include <array>
 
 #include "Entity.hpp"
 
-Entity::Entity(std::string texFile, SDL_Renderer* renderer)
+Entity::Entity(std::string texFile, std::array<int, 4> src, std::array<int, 2> dst, SDL_Renderer* renderer)
     :texFile(texFile), renderer(renderer)
 {
     SDL_Surface* loadedSurface = IMG_Load(this->texFile.c_str());
@@ -22,7 +24,40 @@ Entity::Entity(std::string texFile, SDL_Renderer* renderer)
 
         SDL_FreeSurface(loadedSurface);
     }
+
+    this->src->x = src[0];
+    this->src->y = src[1];
+    this->src->w = src[2];
+    this->src->h = src[3];
+
+    this->dst->x = dst[0];
+    this->dst->y = dst[1];
+    this->dst->w = src[2];
+    this->dst->h = src[3];
 }
+
+Entity::Entity(std::string texFile, std::nullptr_t, SDL_Renderer* renderer)
+    :texFile(texFile), renderer(renderer)
+{
+    SDL_Surface* loadedSurface = IMG_Load(this->texFile.c_str());
+    if (loadedSurface == nullptr)
+        std::cout << "(Entity) Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+    else
+    {
+        this->tex = SDL_CreateTextureFromSurface(this->renderer, loadedSurface);
+        if (this->tex == nullptr)
+            std::cout << "(Entity) Unable to create texture from image! SDL_image Error: " << IMG_GetError() << std::endl;
+        
+        this->texWidth = loadedSurface->w;
+        this->texHeight = loadedSurface->h;
+
+        SDL_FreeSurface(loadedSurface);
+    }
+    this->src = nullptr;
+    this->dst = nullptr;
+}
+
+Entity::Entity() {}
 
 void Entity::close()
 {
@@ -58,4 +93,21 @@ void Entity::setBlendMode(SDL_BlendMode blending)
 void Entity::setAlpha(uint8_t alpha)
 {
     SDL_SetTextureAlphaMod(this->tex, alpha);
+}
+
+void Entity::setPos(std::array<int, 2> pos)
+{
+    this->dst->x = pos[0];
+    this->dst->y = pos[1];
+}
+
+void Entity::setSrc(std::array<int, 4> src)
+{
+    this->src->x = src[0];
+    this->src->y = src[1];
+    this->src->w = src[2];
+    this->src->h = src[3];
+
+    this->dst->w = src[2];
+    this->dst->h = src[3];
 }

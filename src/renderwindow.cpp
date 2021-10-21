@@ -14,7 +14,7 @@ RenderWindow::RenderWindow(std::string title, const unsigned int WINDOW_WIDTH, c
         std::cout << "(RenderWindow) Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
     else
     {
-        this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
+        this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         if (this->renderer == nullptr)
             std::cout << "(RenderWindow) Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
         else
@@ -46,12 +46,6 @@ void RenderWindow::clear()
 void RenderWindow::update()
 {
     SDL_RenderPresent(this->renderer);
-}
-
-void RenderWindow::drawToEntireWindow(Entity entity)
-{
-    SDL_Texture* tex = entity.getTex();
-    SDL_RenderCopy(this->renderer, tex, nullptr, nullptr);
 }
 
 void RenderWindow::drawEntity(Entity entity)

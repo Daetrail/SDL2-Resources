@@ -17,8 +17,7 @@ public:
 
     void clear();
     void update();
-
-    void drawToEntireWindow(Entity entity);
+    
     void drawEntity(Entity entity);
     void drawEntities(std::vector<Entity> entities);
 private:

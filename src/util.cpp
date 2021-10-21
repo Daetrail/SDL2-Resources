@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -24,19 +25,21 @@ namespace util
                 std::cout << "(Util) SDL_image PNG could not initialise! SDL_image Error: " << SDL_GetError() << std::endl;  
                 return false;
             }
+
+            if (TTF_Init() == -1)
+            {
+                std::cout << "(Util) SDL_ttf could not initialise! SDL_ttf Error: " << TTF_GetError() << std::endl;
+                return false;
+            }
         }
         return true;
     }
 
     void close()
-    {
+    {   
+        TTF_Quit();
         IMG_Quit();
         SDL_Quit();
-    }
-
-    void destroyEntityTex(Entity entity)
-    {
-        entity.close();
     }
 
     void destroyEntityTex(std::vector<Entity> entities)
