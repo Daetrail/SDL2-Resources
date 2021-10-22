@@ -30,8 +30,8 @@ protected:
     SDL_Renderer* renderer = nullptr;
     SDL_Texture* tex = nullptr;
 
-    SDL_Rect* src;
-    SDL_Rect* dst;
+    SDL_Rect* src = new SDL_Rect();
+    SDL_Rect* dst = new SDL_Rect();
 
     unsigned int texWidth;
     unsigned int texHeight;

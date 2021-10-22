@@ -63,6 +63,8 @@ void Entity::close()
 {
     SDL_DestroyTexture(this->tex);
     this->tex = nullptr;
+    delete this->src;
+    delete this->dst;
 }
 
 SDL_Rect* Entity::getSrcRect()

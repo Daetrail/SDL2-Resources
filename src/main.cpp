@@ -25,16 +25,7 @@ int main(int argc, char* argv[])
     Entity background("res/gfx/main-bg.png", nullptr, window.getRenderer());
     background.setBlendMode(SDL_BLENDMODE_BLEND);
 
-    std::array<int, 2> dst = {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2};
-    std::array<int, 4> src = {0, 0, 0, 0};
-
-    SDL_Color testColour = {(uint8_t)255, (uint8_t)255, (uint8_t)255, (uint8_t)255};
-
-    // Text test("Hello there!", testColour, "res/gfx/font.ttf", 28, src, dst, window.getRenderer());
-    Text test("Hello There!", testColour, "res/gfx/font.ttf", 50, src, dst, window.getRenderer());
-
-    std::array<int, 2> newpos = {WINDOW_WIDTH / 2 - test.getDstRect()->w / 2, WINDOW_HEIGHT / 2 - test.getDstRect()->h / 2};
-    test.setPos(newpos);
+    Text test("Hello World!", {255, 255, 255, 255}, "res/gfx/font.ttf", 30, {0, 0, 0, 0}, {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2}, window.getRenderer());
 
     SDL_Event event;
 
@@ -49,8 +40,8 @@ int main(int argc, char* argv[])
 
         window.clear();
 
-        window.drawEntity(background);
         window.drawEntity(test);
+        window.drawEntity(background);
 
         window.update();
     }
