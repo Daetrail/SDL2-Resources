@@ -25,7 +25,10 @@ int main(int argc, char* argv[])
     Entity background("res/gfx/main-bg.png", nullptr, window.getRenderer());
     background.setBlendMode(SDL_BLENDMODE_BLEND);
 
-    Text test("Hello World!", {255, 255, 255, 255}, "res/gfx/font.ttf", 30, {0, 0, 0, 0}, {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2}, window.getRenderer());
+    Text test("Hello World!", {255, 255, 255, 255}, "res/gfx/font.ttf", 50, {0, 0, 0, 0}, {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2}, window.getRenderer());
+    test.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - test.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - test.getDstRect()->h / 2});
+
+    std::vector<Entity> entities;
 
     SDL_Event event;
 
@@ -36,12 +39,29 @@ int main(int argc, char* argv[])
         {
             if (event.type == SDL_QUIT)
                 quit = true;
+            if (event.type == SDL_KEYDOWN)
+            {
+                switch (event.key.keysym.sym)
+                {
+                    case SDLK_w:
+                        test.changeText("Hi World!");
+                        test.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - test.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - test.getDstRect()->h / 2});
+                        break;
+                    case SDLK_s:
+                        test.changeText("Hello World!");
+                        test.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - test.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - test.getDstRect()->h / 2});
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
+
+        entities = {background, test};
 
         window.clear();
 
-        window.drawEntity(test);
-        window.drawEntity(background);
+        window.drawEntities(entities);
 
         window.update();
     }
