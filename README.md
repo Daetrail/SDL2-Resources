@@ -5,3 +5,5 @@ Contains:
 - RenderWindow.hpp : Contains class which allows you to create a renderer and a window, and other useful methods around them.
 - Entity.hpp : Contains a wrapper class around a texture
 - Util.hpp : Contains a namespace with useful functions and classes like Vector2f and init()
+- Text.hpp : Render Text with your own fonts
+- Animation.hpp : A class containing data on how to animate your sprite sheet
