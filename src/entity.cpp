@@ -6,6 +6,7 @@
 #include <array>
 
 #include "Entity.hpp"
+#include "Animations.hpp"
 
 Entity::Entity(std::string texFile, std::array<int, 4> src, std::array<int, 2> dst, SDL_Renderer* renderer)
     :texFile(texFile), renderer(renderer)
@@ -97,6 +98,7 @@ void Entity::setAlpha(uint8_t alpha)
     SDL_SetTextureAlphaMod(this->tex, alpha);
 }
 
+
 void Entity::setPos(std::array<int, 2> pos)
 {
     this->dst->x = pos[0];
@@ -112,4 +114,28 @@ void Entity::setSrc(std::array<int, 4> src)
 
     this->dst->w = src[2];
     this->dst->h = src[3];
+}
+
+void Entity::setMoveSpeed(int moveSpeed)
+{
+    this->moveSpeed = moveSpeed;
+}
+
+void Entity::move(std::array<int, 2> direction)
+{
+    this->dst->x += direction[0] * this->moveSpeed;
+    this->dst->y += direction[1] * this->moveSpeed;
+}
+
+void Entity::animate(Animation &animation)
+{
+    this->setSrc(
+        {animation.getSprites()[animationIterator].x, animation.getSprites()[animationIterator].y,
+         animation.getSprites()[animationIterator].w, animation.getSprites()[animationIterator].h}
+    );
+
+    this->animationIterator++;
+
+    if (animationIterator == animation.getSprites().size() - 1)
+        this->animationIterator = 0;
 }

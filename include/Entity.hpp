@@ -6,12 +6,13 @@
 #include <string>
 #include <array>
 
+#include "Animations.hpp"
+
 class Entity
 {
 public:
     Entity(std::string texFile, std::array<int, 4> src, std::array<int, 2> dst, SDL_Renderer* renderer);
     Entity(std::string texFile, std::nullptr_t, SDL_Renderer* renderer);
-    Entity(std::string texText, SDL_Color textColour, std::string fontFile, SDL_Renderer* renderer);
     Entity();
     void close();
 
@@ -25,6 +26,11 @@ public:
 
     void setPos(std::array<int, 2> pos);
     void setSrc(std::array<int, 4> src);
+    void setMoveSpeed(int moveSpeed);
+
+    void move(std::array<int, 2> direction);
+    void animate(Animation &animation);
+
 protected:
     std::string texFile;
     SDL_Renderer* renderer = nullptr;
@@ -35,4 +41,7 @@ protected:
 
     unsigned int texWidth;
     unsigned int texHeight;
+
+    int moveSpeed = 1;
+    size_t animationIterator = 0;
 };

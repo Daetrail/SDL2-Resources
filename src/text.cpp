@@ -64,6 +64,7 @@ void Text::changeText(std::string newText)
 {
     // this->tex = nullptr;
     this->texText = newText;
+    this->tex = nullptr;
     SDL_Surface* newTextSurface = TTF_RenderText_Solid(this->font, this->texText.c_str(), this->textColour);
     if (newTextSurface == nullptr)
         std::cout << "(Text) Unable to render new text surface! SDL_ttf Error: " << TTF_GetError() << std::endl;

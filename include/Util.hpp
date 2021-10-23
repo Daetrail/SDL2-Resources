@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "Entity.hpp"
+#include "Animations.hpp"
 
 namespace util
 {
