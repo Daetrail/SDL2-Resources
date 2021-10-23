@@ -16,6 +16,8 @@ namespace util
     void close();
     void destroyEntityTex(std::vector<Entity> entities);
 
+    void calculateFPS(u_int32_t &lastTime, u_int32_t &frames, u_int32_t &currentFPS, float interval);
+
     template <class T>
     class Vector2
     {
