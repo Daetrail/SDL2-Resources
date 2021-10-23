@@ -24,16 +24,22 @@ int main(int argc, char* argv[])
 
     RenderWindow window(TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+    u_int32_t lastTime = SDL_GetTicks();
+    u_int32_t currentFPS;
+    u_int32_t frames;
+
     Entity background("res/gfx/main-bg.png", nullptr, window.getRenderer());
     background.setBlendMode(SDL_BLENDMODE_BLEND);
 
-    Text test("Press Enter to start timer", {255, 128, 64, 255}, "res/gfx/font.ttf", 30, {0, 0, 0, 0}, {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2}, window.getRenderer());
-    // test.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - test.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - test.getDstRect()->h / 2});
-    test.setPos({50, 50});
+    Text timer("Press Enter to start timer", {255, 128, 64, 255}, "res/gfx/font.ttf", 30, {0, 0, 0, 0}, {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2}, window.getRenderer());
+    // timer.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - timer.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - timer.getDstRect()->h / 2});
+    timer.setPos({50, 50});
+
+    Text fpsText("Fps Counter: ", {144, 196, 255, 255}, timer.getFont(), 30, {0, 0, 0, 0}, {50, 150}, window.getRenderer());
 
     Animation playerAnimation({0, 0}, {576, 64}, 9, true);
     Entity player("res/gfx/textures.png", {0, 0, 64 , 64}, {0, 0}, window.getRenderer());
-    player.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - test.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - test.getDstRect()->h / 2 + 200});
+    player.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - timer.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - timer.getDstRect()->h / 2 + 200});
     player.setMoveSpeed(5);
 
     std::vector<Entity> entities;
@@ -45,11 +51,16 @@ int main(int argc, char* argv[])
 
     std::stringstream timeText;
 
+    std::stringstream FPSText;
+
     bool startedTimer = false;
 
     bool quit = false;
     while (!quit)
     {
+        frames++;
+        util::calculateFPS(lastTime, frames, currentFPS, 1.0);
+
         while (SDL_PollEvent(&event) != 0)
         {
             if (event.type == SDL_QUIT)
@@ -59,8 +70,11 @@ int main(int argc, char* argv[])
                 switch (event.key.keysym.sym)
                 {
                     case SDLK_RETURN:
-                        startTime = SDL_GetTicks();
-                        startedTimer = true;
+                        if (!startedTimer)
+                        {
+                            startTime = SDL_GetTicks();
+                            startedTimer = true;
+                        }
 
                     default:
                         break;
@@ -68,12 +82,16 @@ int main(int argc, char* argv[])
             }
         }
 
+        FPSText.str("");
+        FPSText << "FPS Counter: " << currentFPS; 
+        fpsText.changeText(FPSText.str());
+
         if (startedTimer)
         {
             timeText.str("");
             timeText << "Seconds since start time: " << (SDL_GetTicks() - startTime) / 1000.0;
-            test.changeText(timeText.str().c_str());
-            // test.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - test.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - test.getDstRect()->h / 2});
+            timer.changeText(timeText.str());
+            // timer.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - timer.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - timer.getDstRect()->h / 2});
         }
 
         const u_int8_t* currentKeyStates = SDL_GetKeyboardState(nullptr);
@@ -88,7 +106,7 @@ int main(int argc, char* argv[])
 
         player.animate(playerAnimation);
 
-        entities = {background, test, player};
+        entities = {background, timer, fpsText, player};
 
         window.clear();
 

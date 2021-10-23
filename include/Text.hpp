@@ -14,6 +14,7 @@ class Text : public Entity
 {
 public:
     Text(std::string texText, std::array<int, 4> textColour, std::string fontFile, unsigned int fontSize, std::array<int, 4> src, std::array<int, 2> dst, SDL_Renderer* renderer);
+    Text(std::string texText, std::array<int, 4> textColour, TTF_Font* font, unsigned int fontSize, std::array<int, 4> src, std::array<int, 2> dst, SDL_Renderer* renderer);
     void closeFont();
 
     TTF_Font* getFont();

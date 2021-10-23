@@ -48,6 +48,16 @@ namespace util
             entity.close();
     }
 
+    void calculateFPS(u_int32_t &lastTime, u_int32_t &frames, u_int32_t &currentFPS, const float interval)
+    {
+        if (lastTime < SDL_GetTicks() - interval * 1000)
+        {
+            lastTime = SDL_GetTicks();
+            currentFPS = frames;
+            frames = 0;
+        }
+    }
+
     template <class T>
     Vector2<T>::Vector2(T x, T y) :x(x), y(y) {}
 
