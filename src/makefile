@@ -3,7 +3,7 @@
 # Change debug/release to debug/release for whichever one you need
 type = debug
 
-main: main.o renderwindow.o entity.o util.o text.o menu.o
+main: main.o renderwindow.o entity.o util.o text.o menu.o animation.o
 	g++ ../bin/$(type)/*.o -I ../include/ -m64 -Wall -O3 -o ../main -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 
 main.o: main.cpp
@@ -23,6 +23,9 @@ text.o: text.cpp
 
 menu.o: menu.cpp
 	g++ -c menu.cpp -o ../bin/$(type)/menu.o -I ../include/ -I ../include/SDL2
+
+animation.o: animations.cpp
+	g++ -c animations.cpp -o ../bin/$(type)/animations.o -I ../include/ -I ../include/SDL2
 	
 clean:
 	rm ../bin/$(type)/*.o ../bin/$(type)/main
