@@ -12,37 +12,42 @@ namespace util
 {
     bool init()
     {
-        if (SDL_Init(SDL_INIT_VIDEO) < 0)
+        if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
         {
             std::cout << "(Util) SDL could not initialise! SDL_Error: " << SDL_GetError() << std::endl;
             return false;
         }
-        else
+        
+        int imgFlags = IMG_INIT_PNG;
+        if (!(IMG_Init(imgFlags) & imgFlags))
         {
-            int imgFlags = IMG_INIT_PNG;
-            if (!(IMG_Init(imgFlags) & imgFlags))
-            {
-                std::cout << "(Util) SDL_image PNG could not initialise! SDL_image Error: " << SDL_GetError() << std::endl;  
-                return false;
-            }
+            std::cout << "(Util) SDL_image PNG could not initialise! SDL_image Error: " << SDL_GetError() << std::endl;  
+            return false;
+        }
 
-            if (TTF_Init() == -1)
-            {
-                std::cout << "(Util) SDL_ttf could not initialise! SDL_ttf Error: " << TTF_GetError() << std::endl;
-                return false;
-            }
+        if (TTF_Init() == -1)
+        {
+            std::cout << "(Util) SDL_ttf could not initialise! SDL_ttf Error: " << TTF_GetError() << std::endl;
+            return false;
+        }
+
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+        {
+            std::cout << "SDL_mixer cound not initialise! SDL_mixer Error: " << Mix_GetError() << std::endl;
+            return false;
         }
         return true;
     }
 
     void close()
     {   
+        Mix_Quit();
         TTF_Quit();
         IMG_Quit();
         SDL_Quit();
     }
 
-    void destroyEntityTex(std::vector<Entity> entities)
+    void destroyEntityTex(std::vector<Entity> &entities)
     {
         for (auto entity : entities)
             entity.close();

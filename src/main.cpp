@@ -12,6 +12,8 @@
 #include "Util.hpp"
 #include "Text.hpp"
 #include "Animations.hpp"
+#include "Sound.hpp"
+#include "Music.hpp"
 
 constexpr unsigned int WINDOW_WIDTH = 1024;
 constexpr unsigned int WINDOW_HEIGHT = 768; 
@@ -42,6 +44,8 @@ int main(int argc, char* argv[])
     player.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - timer.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - timer.getDstRect()->h / 2 + 200});
     player.setMoveSpeed(5);
 
+    Music backgroundMusic("res/gfx/bg.wav");
+
     std::vector<Entity> entities;
     std::vector<Animation> animations = {playerAnimation};
 
@@ -69,12 +73,29 @@ int main(int argc, char* argv[])
             {
                 switch (event.key.keysym.sym)
                 {
-                    case SDLK_RETURN:
+                    case SDLK_0:
                         if (!startedTimer)
                         {
                             startTime = SDL_GetTicks();
                             startedTimer = true;
                         }
+                        break;
+
+                    case SDLK_1:
+                        backgroundMusic.play();
+                        break;
+
+                    case SDLK_2:
+                        backgroundMusic.pause();
+                        break;
+
+                    case SDLK_3:
+                        backgroundMusic.resume();
+                        break;
+
+                    case SDLK_4:
+                        backgroundMusic.stop();
+                        break;
 
                     default:
                         break;
@@ -117,6 +138,7 @@ int main(int argc, char* argv[])
 
     util::destroyEntityTex(entities);
     window.close();
+    backgroundMusic.close();
 
     util::close();
 

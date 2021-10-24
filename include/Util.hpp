@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -14,7 +15,7 @@ namespace util
 {
     bool init();
     void close();
-    void destroyEntityTex(std::vector<Entity> entities);
+    void destroyEntityTex(std::vector<Entity> &entities);
 
     void calculateFPS(u_int32_t &lastTime, u_int32_t &frames, u_int32_t &currentFPS, float interval);
 
