@@ -27,6 +27,9 @@ public:
     void setPos(std::array<int, 2> pos);
     void setSrc(std::array<int, 4> src);
     void setMoveSpeed(int moveSpeed);
+    void activateBorderCollision(const unsigned int &width, const unsigned int &height);
+    
+    bool collisionWithRect(SDL_Rect* rect);
 
     void move(std::array<int, 2> direction);
     void animate(Animation &animation);

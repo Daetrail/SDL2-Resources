@@ -14,9 +14,11 @@
 #include "Animations.hpp"
 #include "Sound.hpp"
 #include "Music.hpp"
+#include "Timer.hpp"
 
 constexpr unsigned int WINDOW_WIDTH = 1024;
 constexpr unsigned int WINDOW_HEIGHT = 768; 
+constexpr unsigned int WINDOW_FPS = 60;
 const std::string TITLE = "SDL2-Resources";
 
 int main(int argc, char* argv[])
@@ -26,23 +28,24 @@ int main(int argc, char* argv[])
 
     RenderWindow window(TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    u_int32_t lastTime = SDL_GetTicks();
-    u_int32_t currentFPS;
-    u_int32_t frames;
-
     Entity background("res/gfx/main-bg.png", nullptr, window.getRenderer());
     background.setBlendMode(SDL_BLENDMODE_BLEND);
 
-    Text timer("Press Enter to start timer", {255, 128, 64, 255}, "res/gfx/font.ttf", 30, {0, 0, 0, 0}, {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2}, window.getRenderer());
+    Text timer("Press Enter to start timer", {255, 128, 64, 255}, "res/gfx/font.ttf", 30, {0, 0, 0, 0}, {50, 50}, window.getRenderer());
+    Timer stopclock;
     // timer.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - timer.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - timer.getDstRect()->h / 2});
-    timer.setPos({50, 50});
 
-    Text fpsText("Fps Counter: ", {144, 196, 255, 255}, timer.getFont(), 30, {0, 0, 0, 0}, {50, 150}, window.getRenderer());
+    Text fpsText("FPS Counter: ", {144, 196, 255, 255}, timer.getFont(), 30, {0, 0, 0, 0}, {50, 150}, window.getRenderer());
 
     Animation playerAnimation({0, 0}, {576, 64}, 9, true);
     Entity player("res/gfx/textures.png", {0, 0, 64 , 64}, {0, 0}, window.getRenderer());
     player.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - timer.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - timer.getDstRect()->h / 2 + 200});
     player.setMoveSpeed(5);
+
+    Entity duck("res/gfx/rubberducky.png", {0, 0, 116, 110}, {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2}, window.getRenderer());
+    duck.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - duck.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - duck.getDstRect()->h / 2});
+
+    Text collision("Collision: False", {144, 196, 255, 255}, timer.getFont(), 30, {0, 0, 0, 0}, {50, 250}, window.getRenderer());
 
     Music backgroundMusic("res/gfx/bg.wav");
 
@@ -51,19 +54,19 @@ int main(int argc, char* argv[])
 
     SDL_Event event;
 
-    u_int32_t startTime = 0;
-
     std::stringstream timeText;
 
-    std::stringstream FPSText;
+    util::CalculateFPS fps;
 
-    bool startedTimer = false;
+    // Timer capTimer; 
+
+    std::stringstream FPSText;
 
     bool quit = false;
     while (!quit)
     {
-        frames++;
-        util::calculateFPS(lastTime, frames, currentFPS, 1.0);
+        // capTimer.start();
+        fps.run();
 
         while (SDL_PollEvent(&event) != 0)
         {
@@ -74,11 +77,19 @@ int main(int argc, char* argv[])
                 switch (event.key.keysym.sym)
                 {
                     case SDLK_0:
-                        if (!startedTimer)
-                        {
-                            startTime = SDL_GetTicks();
-                            startedTimer = true;
-                        }
+                        if (stopclock.isRunning() && stopclock.isPaused())
+                            stopclock.reset();
+                        
+                        else if (!stopclock.isRunning())
+                            stopclock.start();
+                        
+                        break;
+
+                    case SDLK_9:
+                        if (stopclock.isPaused())
+                            stopclock.resume();
+                        else
+                            stopclock.pause();
                         break;
 
                     case SDLK_1:
@@ -103,17 +114,23 @@ int main(int argc, char* argv[])
             }
         }
 
+        player.activateBorderCollision(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        if (player.collisionWithRect(duck.getDstRect()))
+            collision.changeText("Collision: True");
+        else 
+            collision.changeText("Collision: False");
+
         FPSText.str("");
-        FPSText << "FPS Counter: " << currentFPS; 
+        FPSText << "FPS Counter: " << fps.getFps(); 
         fpsText.changeText(FPSText.str());
 
-        if (startedTimer)
-        {
-            timeText.str("");
-            timeText << "Seconds since start time: " << (SDL_GetTicks() - startTime) / 1000.0;
-            timer.changeText(timeText.str());
-            // timer.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - timer.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - timer.getDstRect()->h / 2});
-        }
+        timeText.str("");
+        timeText << "Seconds since start time: " << (stopclock.getTicks() / 1000.f);
+
+        timer.changeText(timeText.str());
+
+        // timer.setPos({static_cast<int>(WINDOW_WIDTH) / 2 - timer.getDstRect()->w / 2, static_cast<int>(WINDOW_HEIGHT) / 2 - timer.getDstRect()->h / 2});
 
         const u_int8_t* currentKeyStates = SDL_GetKeyboardState(nullptr);
         if (currentKeyStates[SDL_SCANCODE_W])
@@ -127,13 +144,17 @@ int main(int argc, char* argv[])
 
         player.animate(playerAnimation);
 
-        entities = {background, timer, fpsText, player};
+        entities = {background, timer, fpsText, collision, duck, player};
 
         window.clear();
 
         window.drawEntities(entities);
 
         window.update();
+
+        fps.incrementFrames();
+
+        // util::limitFPS(capTimer, WINDOW_FPS);
     }
 
     util::destroyEntityTex(entities);

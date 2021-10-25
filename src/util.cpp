@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 #include "Util.hpp"
 #include "Entity.hpp"
@@ -53,14 +54,34 @@ namespace util
             entity.close();
     }
 
-    void calculateFPS(u_int32_t &lastTime, u_int32_t &frames, u_int32_t &currentFPS, const float interval)
+    CalculateFPS::CalculateFPS()
     {
-        if (lastTime < SDL_GetTicks() - interval * 1000)
-        {
-            lastTime = SDL_GetTicks();
-            currentFPS = frames;
-            frames = 0;
-        }
+        this->fpsTimer.start();
+    }
+
+    void CalculateFPS::run()
+    {
+        this->avgFPS = this->countedFrames / (fpsTimer.getTicks() / 1000.f);
+        if (this->avgFPS > 2000000) 
+            this->avgFPS = 0;
+    }
+
+    float CalculateFPS::getFps()
+    {
+        return this->avgFPS;
+    }
+
+    void CalculateFPS::incrementFrames()
+    {
+        ++this->countedFrames;
+    }
+
+    void limitFPS(Timer &capTimer, int fps)
+    {
+        int ticksPerFrame = 1000 / fps;
+        int frameTicks = capTimer.getTicks();
+        if (frameTicks < ticksPerFrame)
+            SDL_Delay(ticksPerFrame - frameTicks);
     }
 
     template <class T>

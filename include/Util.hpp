@@ -7,17 +7,35 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
+
 
 #include "Entity.hpp"
 #include "Animations.hpp"
+#include "Timer.hpp"
 
 namespace util
 {
     bool init();
     void close();
     void destroyEntityTex(std::vector<Entity> &entities);
+    
+    struct CalculateFPS
+    {
+    public:
+        CalculateFPS();
 
-    void calculateFPS(u_int32_t &lastTime, u_int32_t &frames, u_int32_t &currentFPS, float interval);
+        void run();
+        float getFps();
+        void incrementFrames();
+    private:
+        Timer fpsTimer;
+        std::stringstream timeText;
+        int countedFrames = 0;
+        float avgFPS;
+    };
+
+    void limitFPS(Timer &capTimer, int fps);
 
     template <class T>
     class Vector2

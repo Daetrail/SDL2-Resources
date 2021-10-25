@@ -121,6 +121,51 @@ void Entity::setMoveSpeed(int moveSpeed)
     this->moveSpeed = moveSpeed;
 }
 
+void Entity::activateBorderCollision(const unsigned int &width, const unsigned int &height)
+{
+    if (this->dst->x < 0)
+        this->dst->x += this->moveSpeed;
+
+    if (this->dst->x + this->src->w > static_cast<int>(width))
+        this->dst->x -= this->moveSpeed;
+
+    if (this->dst->y < 0)
+        this->dst->y += this->moveSpeed;
+
+    if (this->dst->y + this->src->h > static_cast<int>(height))
+        this->dst->y -= this->moveSpeed;
+}
+
+bool Entity::collisionWithRect(SDL_Rect* rect)
+{
+    std::array<int, 2> topLeft = {this->dst->x, this->dst->y};
+    std::array<int, 2> topRight = {this->dst->x + this->dst->w, this->dst->y};
+    std::array<int, 2> bottomLeft = {this->dst->x, this->dst->y + this->dst->h};
+    std::array<int, 2> bottomRight = {this->dst->x + this->dst->w, this->dst->y + this->dst->h};
+
+    std::array<int, 2> rectTopLeft = {rect->x, rect->y};
+    std::array<int, 2> rectTopRight = {rect->x + rect->w, rect->y};
+    std::array<int, 2> rectBottomRight = {rect->x + rect->w, rect->y + rect->h};
+
+    if (((topLeft[0] >= rectTopLeft[0]) && (topLeft[0] <= rectTopRight[0])) && 
+        ((topLeft[1] >= rectTopLeft[1]) && (topLeft[1] <= rectBottomRight[1]))
+        )
+        return true;
+    else if (((topRight[0] >= rectTopLeft[0]) && (topRight[0] <= rectTopRight[0])) && 
+        ((topRight[1] >= rectTopLeft[1]) && (topRight[1] <= rectBottomRight[1]))
+        )
+        return true;
+    else if (((bottomLeft[0] >= rectTopLeft[0]) && (bottomLeft[0] <= rectTopRight[0])) && 
+        ((bottomLeft[1] >= rectTopLeft[1]) && (bottomLeft[1] <= rectBottomRight[1]))
+        )
+        return true;
+    else if (((bottomRight[0] >= rectTopLeft[0]) && (bottomRight[0] <= rectTopRight[0])) && 
+        ((bottomRight[1] >= rectTopLeft[1]) && (bottomRight[1] <= rectBottomRight[1]))
+        )
+        return true;
+    return false;
+}
+
 void Entity::move(std::array<int, 2> direction)
 {
     this->dst->x += direction[0] * this->moveSpeed;
