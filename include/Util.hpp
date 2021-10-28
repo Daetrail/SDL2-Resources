@@ -16,7 +16,7 @@
 
 namespace util
 {
-    bool init();
+    bool init();;
     void close();
     void destroyEntityTex(std::vector<Entity> &entities);
     
@@ -36,6 +36,8 @@ namespace util
     };
 
     void limitFPS(Timer &capTimer, int fps);
+
+    void keepCamInBounds(SDL_Rect &camera, const unsigned int &LEVEL_WIDTH, const unsigned int &LEVEL_HEIGHT);
 
     template <class T>
     class Vector2

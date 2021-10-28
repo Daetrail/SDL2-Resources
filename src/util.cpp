@@ -32,7 +32,7 @@ namespace util
             return false;
         }
 
-        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) < 0)
         {
             std::cout << "SDL_mixer cound not initialise! SDL_mixer Error: " << Mix_GetError() << std::endl;
             return false;
@@ -82,6 +82,18 @@ namespace util
         int frameTicks = capTimer.getTicks();
         if (frameTicks < ticksPerFrame)
             SDL_Delay(ticksPerFrame - frameTicks);
+    }
+
+    void keepCamInBounds(SDL_Rect &camera, const unsigned int &LEVEL_WIDTH, const unsigned int &LEVEL_HEIGHT)
+    {
+        if (camera.x < 0)
+            camera.x = 0;
+        if (camera.y < 0)
+            camera.y = 0;
+        if( camera.x > static_cast<int>(LEVEL_WIDTH) - camera.w )
+            camera.x = static_cast<int>(LEVEL_WIDTH) - camera.w;
+        if( camera.y > static_cast<int>(LEVEL_HEIGHT) - camera.h )
+            camera.y = static_cast<int>(LEVEL_HEIGHT) - camera.h;
     }
 
     template <class T>
